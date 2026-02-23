@@ -1,0 +1,634 @@
+openapi: 3.0.3
+info:
+  title: Antigravity Bridge API
+  description: |
+    Local REST API for the **Antigravity Automation** VS Code extension.
+
+    The server runs entirely on localhost and provides endpoints for:
+    - **Automation** — toggle Auto-Run / Auto-Allow click automation
+    - **Remote Control** — send commands, start/switch chats programmatically
+    - **Content & Streaming** — push/receive live chat content via HTTP and WebSocket
+    - **Licensing** — activate, deactivate, and inspect Lemon Squeezy license keys
+    - **Stats & Checkout** — usage metrics and dynamic purchase flows
+
+    ### WebSocket Feed
+    In addition to REST, a WebSocket server broadcasts live chat payloads at
+    `ws://localhost:9812` (configurable). Connect any client to receive real-time
+    `{"title":"…","content":"…"}` messages.
+
+    ### Freemium Gating
+    Automation and Remote Control endpoints are gated by usage limits.
+    Once the free threshold is exceeded without a valid license, the server
+    responds with **403 Forbidden** and an `upgrade_url`.
+  version: 0.41.0
+  contact:
+    name: QuantSwarms / JoeCodeCreations
+    url: https://github.com/joecodecreations/antigravity_automation
+  license:
+    name: Proprietary
+
+servers:
+  - url: http://localhost:5000
+    description: Default local HTTP server (configurable via `bridge.httpPort`)
+
+tags:
+  - name: Automation
+    description: Toggle auto-click features (Auto-Run, Auto-Allow)
+  - name: Remote Control
+    description: Send commands & manage chat sessions programmatically
+  - name: Content
+    description: Push and poll chat content / live feed
+  - name: Licensing
+    description: License activation, deactivation, and status
+  - name: Stats
+    description: Usage metrics and action tracking
+  - name: Checkout
+    description: Dynamic Lemon Squeezy checkout creation
+
+# ──────────────────────────────────────────────
+# PATHS
+# ──────────────────────────────────────────────
+paths:
+
+  # ── Automation ─────────────────────────────
+  /toggle_auto_run:
+    post:
+      tags: [Automation]
+      summary: Toggle Auto-Run
+      description: |
+        Toggles the Auto-Run state (automatically clicking the "Run" button).
+        Subject to freemium gating — returns 403 once the free click limit is exceeded
+        without an Automation-tier license.
+      responses:
+        "200":
+          description: New Auto-Run state
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auto_run:
+                    type: boolean
+                    example: true
+        "403":
+          $ref: "#/components/responses/FreemiumBlocked"
+
+  /toggle_auto_allow:
+    post:
+      tags: [Automation]
+      summary: Toggle Auto-Allow
+      description: |
+        Toggles the Auto-Allow state (automatically approving permission prompts).
+        Subject to the same freemium automation gating as `/toggle_auto_run`.
+      responses:
+        "200":
+          description: New Auto-Allow state
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auto_allow:
+                    type: boolean
+                    example: true
+        "403":
+          $ref: "#/components/responses/FreemiumBlocked"
+
+  # ── Remote Control ─────────────────────────
+  /send_command:
+    post:
+      tags: [Remote Control]
+      summary: Send a command / prompt
+      description: |
+        Enqueues a text command to be injected into the active Antigravity chat.
+        Gated by Remote Control freemium limits.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text:
+                  type: string
+                  description: The prompt or command string to send
+                  example: "Refactor the auth module"
+      responses:
+        "200":
+          description: Command queued successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: queued
+                  position:
+                    type: integer
+                    description: Position in the command queue
+                    example: 1
+                  usage:
+                    $ref: "#/components/schemas/RemoteUsageSummary"
+        "400":
+          description: Missing `text` field
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          $ref: "#/components/responses/FreemiumBlockedRC"
+
+  /start-new-chat:
+    post:
+      tags: [Remote Control]
+      summary: Start a new chat session
+      description: |
+        Signals the UI to open a brand-new chat session.
+        Gated by Remote Control freemium limits.
+      responses:
+        "200":
+          description: New-chat signal queued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: queued_new_chat
+        "403":
+          $ref: "#/components/responses/FreemiumBlockedRC"
+
+  /switch_chat:
+    post:
+      tags: [Remote Control]
+      summary: Switch to a specific chat
+      description: |
+        Tells the UI to switch to a prior conversation identified by its title.
+        Gated by Remote Control freemium limits.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                title:
+                  type: string
+                  description: Conversation title to switch to
+                  example: "Refactoring Auth Module"
+      responses:
+        "200":
+          description: Switch-chat signal queued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: queued
+                  title:
+                    type: string
+                    example: "Refactoring Auth Module"
+                  usage:
+                    $ref: "#/components/schemas/RemoteUsageSummary"
+        "400":
+          description: Missing `title` field
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          $ref: "#/components/responses/FreemiumBlockedRC"
+
+  # ── Content ────────────────────────────────
+  /get_command:
+    get:
+      tags: [Content]
+      summary: Poll for pending commands and current state
+      description: |
+        Used internally by the injected bridge script to poll for queued
+        commands, automation state, new-chat / switch-chat signals, and
+        license & usage information. Returns the next command in the queue
+        (if any) plus all current state flags.
+      responses:
+        "200":
+          description: Current state snapshot
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCommandResponse"
+
+  /update:
+    post:
+      tags: [Content]
+      summary: Push chat content (internal webhook)
+      description: |
+        Receives chat logs from the bridge front-end webview. Persists
+        the content to `content_log_<title>.txt` in the active workspace
+        and broadcasts the payload over the WebSocket to all connected clients.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [content]
+              properties:
+                title:
+                  type: string
+                  description: Conversation title (defaults to "Default Conversation")
+                  example: "Debugging Login"
+                content:
+                  type: string
+                  description: Full conversation text
+                  example: "User: How do I fix the login bug?\nAssistant: ..."
+      responses:
+        "200":
+          description: Content received and broadcast
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: received
+        "400":
+          description: Missing `content` field
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  # ── Licensing ──────────────────────────────
+  /license_status:
+    get:
+      tags: [Licensing]
+      summary: Get current license status
+      description: Returns the cached license tier, validity, and key metadata.
+      responses:
+        "200":
+          description: License status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LicenseStatus"
+
+  /license_activate:
+    post:
+      tags: [Licensing]
+      summary: Activate a license key
+      description: |
+        Activates a Lemon Squeezy license key against this machine.
+        On success the license tier is updated immediately.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [licenseKey]
+              properties:
+                licenseKey:
+                  type: string
+                  example: "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+      responses:
+        "200":
+          description: Activation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LicenseStatus"
+        "400":
+          description: Missing `licenseKey`
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /license_deactivate:
+    post:
+      tags: [Licensing]
+      summary: Deactivate the current license
+      description: Removes the active license key and resets to Free tier.
+      responses:
+        "200":
+          description: Deactivation confirmed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: deactivated
+
+  /license_refresh:
+    post:
+      tags: [Licensing]
+      summary: Refresh / re-validate the current license
+      description: |
+        Re-validates the stored license key with the Lemon Squeezy API
+        and updates the cached tier and status.
+      responses:
+        "200":
+          description: Refreshed license status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LicenseStatus"
+
+  # ── Stats ──────────────────────────────────
+  /stats:
+    get:
+      tags: [Stats]
+      summary: Get usage statistics
+      description: Returns cumulative usage metrics for auto-clicks, remote commands, and sessions.
+      responses:
+        "200":
+          description: Usage statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BridgeStats"
+
+  /track_action:
+    post:
+      tags: [Stats]
+      summary: Track a usage action
+      description: |
+        Increments a specific usage counter. Used by the injected bridge
+        to report auto-run / auto-allow clicks and remote commands.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [action]
+              properties:
+                action:
+                  type: string
+                  enum: [auto_run, auto_allow, remote_command]
+                  description: The action type to track
+                  example: auto_run
+      responses:
+        "200":
+          description: Action tracked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: tracked
+                  stats:
+                    $ref: "#/components/schemas/BridgeStats"
+
+  # ── Checkout ───────────────────────────────
+  /create_checkout:
+    post:
+      tags: [Checkout]
+      summary: Create a dynamic checkout URL
+      description: |
+        Generates a Lemon Squeezy checkout link for the specified tier.
+        Requires the API key to be configured (`bridge.lsApiKey`).
+        The redirect URL points back to `/checkout_success` for auto-activation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tier]
+              properties:
+                tier:
+                  type: string
+                  enum: [automation, remote_control_monthly, remote_control_lifetime]
+                  example: automation
+      responses:
+        "200":
+          description: Checkout URL created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    format: uri
+                    example: "https://quantswarms.lemonsqueezy.com/checkout/..."
+        "400":
+          description: Missing `tier`
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Checkout creation failed (API key missing or LS error)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /checkout_success:
+    get:
+      tags: [Checkout]
+      summary: Post-purchase redirect & auto-activation
+      description: |
+        Redirect target after a Lemon Squeezy checkout completes.
+        Returns an HTML page confirming the purchase and triggers
+        background auto-activation of the newest license key.
+      responses:
+        "200":
+          description: HTML confirmation page
+          content:
+            text/html:
+              schema:
+                type: string
+
+# ──────────────────────────────────────────────
+# COMPONENTS
+# ──────────────────────────────────────────────
+components:
+
+  schemas:
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "No text provided"
+
+    LicenseStatus:
+      type: object
+      properties:
+        isValid:
+          type: boolean
+          example: true
+        tier:
+          type: string
+          enum: [free, automation, remote_control]
+          example: remote_control
+        licenseKey:
+          type: string
+          nullable: true
+          example: "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+        instanceId:
+          type: string
+          nullable: true
+        productName:
+          type: string
+          example: "Antigravity Remote Control"
+        variantName:
+          type: string
+          example: "Monthly"
+        customerEmail:
+          type: string
+          format: email
+          example: "user@example.com"
+        status:
+          type: string
+          example: active
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+        error:
+          type: string
+          nullable: true
+
+    BridgeStats:
+      type: object
+      properties:
+        autoRunClicks:
+          type: integer
+          example: 142
+        autoAllowClicks:
+          type: integer
+          example: 87
+        remoteCommands:
+          type: integer
+          example: 36
+        totalSessions:
+          type: integer
+          example: 12
+        firstUsed:
+          type: string
+          format: date-time
+          example: "2026-01-15T10:30:00.000Z"
+        lastUsed:
+          type: string
+          format: date-time
+          example: "2026-02-23T20:15:07.000Z"
+
+    UsageInfo:
+      type: object
+      properties:
+        autoClicks:
+          type: integer
+          description: Total automation clicks (run + allow)
+        remoteCommands:
+          type: integer
+        autoFreeRemaining:
+          type: integer
+          description: Free automation uses left (-1 = unlimited / licensed)
+        rcFreeRemaining:
+          type: integer
+          description: Free remote-control uses left (-1 = unlimited / licensed)
+
+    RemoteUsageSummary:
+      type: object
+      properties:
+        remoteCommands:
+          type: integer
+          example: 5
+        freeRemaining:
+          type: integer
+          description: Free remote-control uses left (-1 = unlimited)
+          example: 45
+
+    GetCommandResponse:
+      type: object
+      properties:
+        text:
+          type: string
+          nullable: true
+          description: Next queued command text, or null if none
+        status:
+          type: string
+          enum: [success, no_command]
+        auto_run:
+          type: boolean
+          description: Effective Auto-Run state (respects freemium gating)
+        auto_allow:
+          type: boolean
+          description: Effective Auto-Allow state (respects freemium gating)
+        start_new_chat:
+          type: boolean
+          description: Whether a new-chat signal is pending
+        switch_chat:
+          type: string
+          nullable: true
+          description: Title of the chat to switch to, or null
+        license:
+          $ref: "#/components/schemas/LicenseStatus"
+        usage:
+          $ref: "#/components/schemas/UsageInfo"
+
+    WebSocketPayload:
+      type: object
+      description: Payload broadcast over `ws://localhost:9812`
+      properties:
+        title:
+          type: string
+          example: "Current Topic"
+        content:
+          type: string
+          example: "Full conversation text..."
+
+  responses:
+
+    FreemiumBlocked:
+      description: Free usage limit exceeded — license required
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Automation free limit reached (1000 uses). Upgrade for unlimited access ($4.99 one-time)."
+              upgrade_url:
+                type: string
+                format: uri
+                example: "https://quantswarms.lemonsqueezy.com"
+
+    FreemiumBlockedRC:
+      description: Free Remote Control limit exceeded — license required
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Remote Control Pro free limit reached (50 uses). Upgrade for unlimited access ($9.99/mo or $49 lifetime)."
+              upgrade_url:
+                type: string
+                format: uri
+                example: "https://quantswarms.lemonsqueezy.com"
+              usage:
+                type: object
+                properties:
+                  remoteCommands:
+                    type: integer
+                  freeLimit:
+                    type: integer
