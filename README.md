@@ -1,13 +1,23 @@
 # Antigravity Automation
 
-[![](src/images/logo2.jpg)](https://github.com/joecodecreations/antigravity_automation)
+<p align="center">
+  <img src="src/images/logo2.jpg" alt="Antigravity Automation" width="300">
+</p>
+
+<p align="center">
+  <a href="https://antigravityautomation.com"><img src="https://img.shields.io/badge/🌐_Website_&_Docs-Visit_Now-blue?style=for-the-badge&labelColor=0f172a" alt="Website & Docs"></a>
+  &nbsp;
+  <a href="https://antigravityautomation.com/docs/"><img src="https://img.shields.io/badge/📖_Interactive_API_Docs-Swagger_UI-green?style=for-the-badge&labelColor=0f172a" alt="Swagger UI"></a>
+</p>
+
+---
 
 The **Antigravity Automation** is an extension for automating and remotely controlling the Antigravity IDE. 
 
-***Elimatiate*** those pesky manual clicks but more than that, ***be able to interact with the chats from anywhere outside the ide to allow complete and full control.***
+***Eliminate*** those pesky manual clicks but more than that, ***be able to interact with the chats from anywhere outside the ide to allow complete and full control.***
 ![](src/images/blue_run_button_click_required.png)
 
-Recursive planning, execution and continuation using orchestrated workflows to leverage Antigravity as a peice to your larger workflows.
+Recursive planning, execution and continuation using orchestrated workflows to leverage Antigravity as a piece of your larger workflows.
 
 This extension injects a secure, lightweight communication bridge directly into your active VSCode Workbench, allowing you to orchestrate the AI using external scripts, automate repetitive conversational clicks, and export scraped content natively to your local filesystem.
 
@@ -16,14 +26,31 @@ This extension injects a secure, lightweight communication bridge directly into 
 - **100% Safe**: Locally ran, no data leaves your machine.
 - **Auto-Run Automation**: Automatically detects and clicks the "Run" buttons inside the Antigravity chat, saving you from constant clicking during complex tasks.
 - **Auto-Allow Execution**: Bypasses the "Allow this Conversation" prompts seamlessly.
-- **Ability to Orchestrate Chats with ai**: Extension spins up a local server that you can send requests to in order to start new chats, send new messages, get data from the chats.
+- **Ability to Orchestrate Chats with AI**: Extension spins up a local server that you can send requests to in order to start new chats, send new messages, get data from the chats.
 - **Bridge Control Dashboard**: An interactive Webview UI for toggling automation states and tracking real-time websocket activity.
 - **One Click Button**: One Click button to easily enable or disable auto click
 
+## Code Samples
+
+Ready-to-run examples for interacting with every API endpoint in **8 languages**:
+
+| Language | File |
+|----------|------|
+| 🐍 Python | [`code_samples/python/antigravity_api.py`](code_samples/python/antigravity_api.py) |
+| 🟨 JavaScript | [`code_samples/javascript/antigravity_api.js`](code_samples/javascript/antigravity_api.js) |
+| 🦀 Rust | [`code_samples/rust/src/main.rs`](code_samples/rust/src/main.rs) |
+| 🐹 Go | [`code_samples/go/main.go`](code_samples/go/main.go) |
+| 💎 Ruby | [`code_samples/ruby/antigravity_api.rb`](code_samples/ruby/antigravity_api.rb) |
+| 🐘 PHP | [`code_samples/php/antigravity_api.php`](code_samples/php/antigravity_api.php) |
+| 🟦 C# | [`code_samples/csharp/AntigravityApi.cs`](code_samples/csharp/AntigravityApi.cs) |
+| 🔧 cURL / Shell | [`code_samples/curl/antigravity_api.sh`](code_samples/curl/antigravity_api.sh) |
+
+Each file demonstrates: toggle automation, send commands, start/switch chats, get stats, push updates, track actions, and WebSocket streaming.
+
 ## Extension Commands
 
-- \`Start Antigravity Bridge\`: Opens the Bridge Control Dashboard.
-- \`Toggle Antigravity Automation\`: Globally pauses/resumes the Auto-Run and Auto-Allow logic from the Activity Bar.
+- `Start Antigravity Bridge`: Opens the Bridge Control Dashboard.
+- `Toggle Antigravity Automation`: Globally pauses/resumes the Auto-Run and Auto-Allow logic from the Activity Bar.
 
 ## Configuration Settings
 
@@ -58,7 +85,7 @@ The Antigravity Automation runs entirely within your local machine. It never sen
 
 
 ## Integrate with other AI agents
-Now you can easily include Antigravity as a peice of your larger workflows and systems like Moltbot, Cron Jobs, Cursor and more. 
+Now you can easily include Antigravity as a piece of your larger workflows and systems like Moltbot, Cron Jobs, Cursor and more. 
 
 ## No additional AI Subscription Required
 Leverage your existing Antigravity subscription to get the most out of it now. 
@@ -119,13 +146,10 @@ All endpoints accept JSON payloads and return JSON responses. Send requests with
 - **Description**: Receives chat logs pushed directly by the bridge front-end webview. Writes logs to `content_log_<title>.txt` in the root of the active VS Code workspace and broadcasts them over the WebSocket.
 - **Payload**: `{ "title": "Conversation Title", "content": "..." }`
 
-## License & Stats Endpoints (HTTP)
+## Stats Endpoints (HTTP)
 
-In addition to core automation commands, the API provides the following diagnostic & licensing routes:
-- **`GET /license_status`** - View the current active license tier and key details.
-- **`POST /license_activate`** - Requires `{ "licenseKey": "..." }`
 - **`GET /stats`** - View current usage metrics for Auto-Run, Auto-Allow, Remote Commands.
+- **`POST /track_action`** - Track a usage action. Payload: `{ "action": "auto_run" }`
 
 > **Important Note on Freemium Limits**:
 > Interactions with the Automation endpoints (`toggle_auto_run`, `toggle_auto_allow`) and Remote Control endpoints (`send_command`, `start-new-chat`, `switch_chat`) are gated by basic usage limits. Requesting these APIs beyond your free clicks will respond with a **403 Forbidden** along with `{"error": "...", "upgrade_url": "..."}` until a Pro-tier license is successfully activated!
-
