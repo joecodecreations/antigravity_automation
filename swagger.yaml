@@ -8,8 +8,7 @@ info:
     - **Automation** — toggle Auto-Run / Auto-Allow click automation
     - **Remote Control** — send commands, start/switch chats programmatically
     - **Content & Streaming** — push/receive live chat content via HTTP and WebSocket
-    - **Licensing** — activate, deactivate, and inspect Lemon Squeezy license keys
-    - **Stats & Checkout** — usage metrics and dynamic purchase flows
+    - **Stats** — usage metrics and action tracking
 
     ### WebSocket Feed
     In addition to REST, a WebSocket server broadcasts live chat payloads at
@@ -38,12 +37,8 @@ tags:
     description: Send commands & manage chat sessions programmatically
   - name: Content
     description: Push and poll chat content / live feed
-  - name: Licensing
-    description: License activation, deactivation, and status
   - name: Stats
     description: Usage metrics and action tracking
-  - name: Checkout
-    description: Dynamic Lemon Squeezy checkout creation
 
 # ──────────────────────────────────────────────
 # PATHS
@@ -213,7 +208,7 @@ paths:
       description: |
         Used internally by the injected bridge script to poll for queued
         commands, automation state, new-chat / switch-chat signals, and
-        license & usage information. Returns the next command in the queue
+        usage information. Returns the next command in the queue
         (if any) plus all current state flags.
       responses:
         "200":
@@ -265,83 +260,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  # ── Licensing ──────────────────────────────
-  /license_status:
-    get:
-      tags: [Licensing]
-      summary: Get current license status
-      description: Returns the cached license tier, validity, and key metadata.
-      responses:
-        "200":
-          description: License status
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LicenseStatus"
 
-  /license_activate:
-    post:
-      tags: [Licensing]
-      summary: Activate a license key
-      description: |
-        Activates a Lemon Squeezy license key against this machine.
-        On success the license tier is updated immediately.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [licenseKey]
-              properties:
-                licenseKey:
-                  type: string
-                  example: "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-      responses:
-        "200":
-          description: Activation result
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LicenseStatus"
-        "400":
-          description: Missing `licenseKey`
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  /license_deactivate:
-    post:
-      tags: [Licensing]
-      summary: Deactivate the current license
-      description: Removes the active license key and resets to Free tier.
-      responses:
-        "200":
-          description: Deactivation confirmed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: deactivated
-
-  /license_refresh:
-    post:
-      tags: [Licensing]
-      summary: Refresh / re-validate the current license
-      description: |
-        Re-validates the stored license key with the Lemon Squeezy API
-        and updates the cached tier and status.
-      responses:
-        "200":
-          description: Refreshed license status
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LicenseStatus"
 
   # ── Stats ──────────────────────────────────
   /stats:
@@ -391,67 +310,7 @@ paths:
                   stats:
                     $ref: "#/components/schemas/BridgeStats"
 
-  # ── Checkout ───────────────────────────────
-  /create_checkout:
-    post:
-      tags: [Checkout]
-      summary: Create a dynamic checkout URL
-      description: |
-        Generates a Lemon Squeezy checkout link for the specified tier.
-        Requires the API key to be configured (`bridge.lsApiKey`).
-        The redirect URL points back to `/checkout_success` for auto-activation.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [tier]
-              properties:
-                tier:
-                  type: string
-                  enum: [automation, remote_control_monthly, remote_control_lifetime]
-                  example: automation
-      responses:
-        "200":
-          description: Checkout URL created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  url:
-                    type: string
-                    format: uri
-                    example: "https://quantswarms.lemonsqueezy.com/checkout/..."
-        "400":
-          description: Missing `tier`
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Checkout creation failed (API key missing or LS error)
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
 
-  /checkout_success:
-    get:
-      tags: [Checkout]
-      summary: Post-purchase redirect & auto-activation
-      description: |
-        Redirect target after a Lemon Squeezy checkout completes.
-        Returns an HTML page confirming the purchase and triggers
-        background auto-activation of the newest license key.
-      responses:
-        "200":
-          description: HTML confirmation page
-          content:
-            text/html:
-              schema:
-                type: string
 
 # ──────────────────────────────────────────────
 # COMPONENTS
@@ -467,43 +326,6 @@ components:
           type: string
           example: "No text provided"
 
-    LicenseStatus:
-      type: object
-      properties:
-        isValid:
-          type: boolean
-          example: true
-        tier:
-          type: string
-          enum: [free, automation, remote_control]
-          example: remote_control
-        licenseKey:
-          type: string
-          nullable: true
-          example: "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-        instanceId:
-          type: string
-          nullable: true
-        productName:
-          type: string
-          example: "Antigravity Remote Control"
-        variantName:
-          type: string
-          example: "Monthly"
-        customerEmail:
-          type: string
-          format: email
-          example: "user@example.com"
-        status:
-          type: string
-          example: active
-        expiresAt:
-          type: string
-          format: date-time
-          nullable: true
-        error:
-          type: string
-          nullable: true
 
     BridgeStats:
       type: object
@@ -578,8 +400,7 @@ components:
           type: string
           nullable: true
           description: Title of the chat to switch to, or null
-        license:
-          $ref: "#/components/schemas/LicenseStatus"
+
         usage:
           $ref: "#/components/schemas/UsageInfo"
 

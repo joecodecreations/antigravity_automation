@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Antigravity Bridge API",
-    "description": "Local REST API for the **Antigravity Automation** VS Code extension.\n\nThe server runs entirely on localhost and provides endpoints for:\n- **Automation** — toggle Auto-Run / Auto-Allow click automation\n- **Remote Control** — send commands, start/switch chats programmatically\n- **Content & Streaming** — push/receive live chat content via HTTP and WebSocket\n- **Licensing** — activate, deactivate, and inspect Lemon Squeezy license keys\n- **Stats & Checkout** — usage metrics and dynamic purchase flows\n\n### WebSocket Feed\nIn addition to REST, a WebSocket server broadcasts live chat payloads at\n`ws://localhost:9812` (configurable). Connect any client to receive real-time\n`{\"title\":\"…\",\"content\":\"…\"}` messages.\n\n### Freemium Gating\nAutomation and Remote Control endpoints are gated by usage limits.\nOnce the free threshold is exceeded without a valid license, the server\nresponds with **403 Forbidden** and an `upgrade_url`.\n",
+    "description": "Local REST API for the **Antigravity Automation** VS Code extension.\n\nThe server runs entirely on localhost and provides endpoints for:\n- **Automation** — toggle Auto-Run / Auto-Allow click automation\n- **Remote Control** — send commands, start/switch chats programmatically\n- **Content & Streaming** — push/receive live chat content via HTTP and WebSocket\n- **Stats** — usage metrics and action tracking\n\n### WebSocket Feed\nIn addition to REST, a WebSocket server broadcasts live chat payloads at\n`ws://localhost:9812` (configurable). Connect any client to receive real-time\n`{\"title\":\"…\",\"content\":\"…\"}` messages.\n\n### Freemium Gating\nAutomation and Remote Control endpoints are gated by usage limits.\nOnce the free threshold is exceeded without a valid license, the server\nresponds with **403 Forbidden** and an `upgrade_url`.\n",
     "version": "0.41.0",
     "contact": {
       "name": "QuantSwarms / JoeCodeCreations",
@@ -32,16 +32,8 @@
       "description": "Push and poll chat content / live feed"
     },
     {
-      "name": "Licensing",
-      "description": "License activation, deactivation, and status"
-    },
-    {
       "name": "Stats",
       "description": "Usage metrics and action tracking"
-    },
-    {
-      "name": "Checkout",
-      "description": "Dynamic Lemon Squeezy checkout creation"
     }
   ],
   "paths": {
@@ -276,7 +268,7 @@
           "Content"
         ],
         "summary": "Poll for pending commands and current state",
-        "description": "Used internally by the injected bridge script to poll for queued\ncommands, automation state, new-chat / switch-chat signals, and\nlicense & usage information. Returns the next command in the queue\n(if any) plus all current state flags.\n",
+        "description": "Used internally by the injected bridge script to poll for queued\ncommands, automation state, new-chat / switch-chat signals, and\nusage information. Returns the next command in the queue\n(if any) plus all current state flags.\n",
         "responses": {
           "200": {
             "description": "Current state snapshot",
@@ -346,125 +338,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/license_status": {
-      "get": {
-        "tags": [
-          "Licensing"
-        ],
-        "summary": "Get current license status",
-        "description": "Returns the cached license tier, validity, and key metadata.",
-        "responses": {
-          "200": {
-            "description": "License status",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LicenseStatus"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/license_activate": {
-      "post": {
-        "tags": [
-          "Licensing"
-        ],
-        "summary": "Activate a license key",
-        "description": "Activates a Lemon Squeezy license key against this machine.\nOn success the license tier is updated immediately.\n",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "licenseKey"
-                ],
-                "properties": {
-                  "licenseKey": {
-                    "type": "string",
-                    "example": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Activation result",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LicenseStatus"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing `licenseKey`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/license_deactivate": {
-      "post": {
-        "tags": [
-          "Licensing"
-        ],
-        "summary": "Deactivate the current license",
-        "description": "Removes the active license key and resets to Free tier.",
-        "responses": {
-          "200": {
-            "description": "Deactivation confirmed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "deactivated"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/license_refresh": {
-      "post": {
-        "tags": [
-          "Licensing"
-        ],
-        "summary": "Refresh / re-validate the current license",
-        "description": "Re-validates the stored license key with the Lemon Squeezy API\nand updates the cached tier and status.\n",
-        "responses": {
-          "200": {
-            "description": "Refreshed license status",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LicenseStatus"
                 }
               }
             }
@@ -547,99 +420,6 @@
           }
         }
       }
-    },
-    "/create_checkout": {
-      "post": {
-        "tags": [
-          "Checkout"
-        ],
-        "summary": "Create a dynamic checkout URL",
-        "description": "Generates a Lemon Squeezy checkout link for the specified tier.\nRequires the API key to be configured (`bridge.lsApiKey`).\nThe redirect URL points back to `/checkout_success` for auto-activation.\n",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "tier"
-                ],
-                "properties": {
-                  "tier": {
-                    "type": "string",
-                    "enum": [
-                      "automation",
-                      "remote_control_monthly",
-                      "remote_control_lifetime"
-                    ],
-                    "example": "automation"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Checkout URL created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "type": "string",
-                      "format": "uri",
-                      "example": "https://quantswarms.lemonsqueezy.com/checkout/..."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing `tier`",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Checkout creation failed (API key missing or LS error)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/checkout_success": {
-      "get": {
-        "tags": [
-          "Checkout"
-        ],
-        "summary": "Post-purchase redirect & auto-activation",
-        "description": "Redirect target after a Lemon Squeezy checkout completes.\nReturns an HTML page confirming the purchase and triggers\nbackground auto-activation of the newest license key.\n",
-        "responses": {
-          "200": {
-            "description": "HTML confirmation page",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -650,59 +430,6 @@
           "error": {
             "type": "string",
             "example": "No text provided"
-          }
-        }
-      },
-      "LicenseStatus": {
-        "type": "object",
-        "properties": {
-          "isValid": {
-            "type": "boolean",
-            "example": true
-          },
-          "tier": {
-            "type": "string",
-            "enum": [
-              "free",
-              "automation",
-              "remote_control"
-            ],
-            "example": "remote_control"
-          },
-          "licenseKey": {
-            "type": "string",
-            "nullable": true,
-            "example": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-          },
-          "instanceId": {
-            "type": "string",
-            "nullable": true
-          },
-          "productName": {
-            "type": "string",
-            "example": "Antigravity Remote Control"
-          },
-          "variantName": {
-            "type": "string",
-            "example": "Monthly"
-          },
-          "customerEmail": {
-            "type": "string",
-            "format": "email",
-            "example": "user@example.com"
-          },
-          "status": {
-            "type": "string",
-            "example": "active"
-          },
-          "expiresAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "error": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -802,9 +529,6 @@
             "type": "string",
             "nullable": true,
             "description": "Title of the chat to switch to, or null"
-          },
-          "license": {
-            "$ref": "#/components/schemas/LicenseStatus"
           },
           "usage": {
             "$ref": "#/components/schemas/UsageInfo"
