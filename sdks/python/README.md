@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://antigravityautomation.com/src/images/icon.png" alt="Antigravity Automation" width="80">
+  <img src="https://raw.githubusercontent.com/joecodecreations/antigravity_automation/main/src/images/icon.png" alt="Antigravity Automation" width="80">
 </p>
 
 <h1 align="center">antigravity-automation</h1>
