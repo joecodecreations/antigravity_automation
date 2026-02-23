@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "antigravity-automation"
-version = "0.1.0"
+version = "0.42.0"
 description = "Python client library for the Antigravity Automation API — automate clicks, send commands, stream live AI outputs."
 readme = "README.md"
 license = {text = "MIT"}

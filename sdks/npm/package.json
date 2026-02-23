@@ -1,56 +1,56 @@
 {
-    "name": "antigravity-automation",
-    "version": "0.1.0",
-    "description": "Node.js client library for the Antigravity Automation API — automate clicks, send commands, stream live AI outputs via REST & WebSocket.",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "files": [
-        "dist",
-        "README.md",
-        "LICENSE"
-    ],
-    "scripts": {
-        "build": "tsc",
-        "dev": "tsc --watch",
-        "test": "node test/test.js",
-        "test:live": "node test/test_live.js",
-        "prepublishOnly": "npm run build",
-        "link:local": "npm run build && npm link",
-        "unlink:local": "npm unlink antigravity-automation"
-    },
-    "keywords": [
-        "antigravity",
-        "vscode",
-        "ide-automation",
-        "ai",
-        "remote-control",
-        "api-client",
-        "websocket",
-        "chat-automation",
-        "developer-tools"
-    ],
-    "author": "JoeCodeCreations",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/joecodecreations/antigravity_automation"
-    },
-    "homepage": "https://antigravityautomation.com",
-    "bugs": {
-        "url": "https://github.com/joecodecreations/antigravity_automation/issues"
-    },
-    "engines": {
-        "node": ">=16.0.0"
-    },
-    "devDependencies": {
-        "@types/node": "^20.0.0",
-        "@types/ws": "^8.18.1",
-        "typescript": "^5.0.0"
-    },
-    "dependencies": {
-        "ws": ">=8.0.0"
-    },
-    "peerDependencies": {
-        "ws": ">=8.0.0"
-    }
+  "name": "antigravity-automation",
+  "version": "0.42.0",
+  "description": "Node.js client library for the Antigravity Automation API — automate clicks, send commands, stream live AI outputs via REST & WebSocket.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "node test/test.js",
+    "test:live": "node test/test_live.js",
+    "prepublishOnly": "npm run build",
+    "link:local": "npm run build && npm link",
+    "unlink:local": "npm unlink antigravity-automation"
+  },
+  "keywords": [
+    "antigravity",
+    "vscode",
+    "ide-automation",
+    "ai",
+    "remote-control",
+    "api-client",
+    "websocket",
+    "chat-automation",
+    "developer-tools"
+  ],
+  "author": "JoeCodeCreations",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joecodecreations/antigravity_automation"
+  },
+  "homepage": "https://antigravityautomation.com",
+  "bugs": {
+    "url": "https://github.com/joecodecreations/antigravity_automation/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/ws": "^8.18.1",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "ws": ">=8.0.0"
+  },
+  "peerDependencies": {
+    "ws": ">=8.0.0"
+  }
 }
