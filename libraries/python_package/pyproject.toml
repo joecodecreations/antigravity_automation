@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "antigravity-automation"
+version = "0.1.0"
+description = "Python client library for the Antigravity Automation API — automate clicks, send commands, stream live AI outputs."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+authors = [{name = "JoeCodeCreations"}]
+keywords = ["antigravity", "vscode", "ide-automation", "ai", "remote-control", "api-client", "websocket"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+    "requests>=2.25.0",
+    "websockets>=10.0",
+]
+
+[project.urls]
+Homepage = "https://antigravityautomation.com"
+Repository = "https://github.com/joecodecreations/antigravity_automation"
+Documentation = "https://antigravityautomation.com/docs/"
+Issues = "https://github.com/joecodecreations/antigravity_automation/issues"
+
+[project.optional-dependencies]
+dev = ["pytest", "build", "twine"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
