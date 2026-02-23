@@ -37,13 +37,13 @@ Ready-to-run examples for interacting with every API endpoint in **8 languages**
 | Language | File |
 |----------|------|
 | 🐍 Python | [`code_samples/python/antigravity_api.py`](code_samples/python/antigravity_api.py) |
-| 🟨 JavaScript | [`code_samples/javascript/antigravity_api.js`](code_samples/javascript/antigravity_api.js) |
-| 🦀 Rust | [`code_samples/rust/src/main.rs`](code_samples/rust/src/main.rs) |
-| 🐹 Go | [`code_samples/go/main.go`](code_samples/go/main.go) |
-| 💎 Ruby | [`code_samples/ruby/antigravity_api.rb`](code_samples/ruby/antigravity_api.rb) |
-| 🐘 PHP | [`code_samples/php/antigravity_api.php`](code_samples/php/antigravity_api.php) |
-| 🟦 C# | [`code_samples/csharp/AntigravityApi.cs`](code_samples/csharp/AntigravityApi.cs) |
-| 🔧 cURL / Shell | [`code_samples/curl/antigravity_api.sh`](code_samples/curl/antigravity_api.sh) |
+| 🟨 JavaScript | [`code_samples/javascript/antigravity_automation_api_examples.js`](code_samples/javascript/antigravity_automation_api_examples.js) |
+| 🦀 Rust | [`code_samples/rust/src/antigravity_automation_api_examples.rs`](code_samples/rust/src/antigravity_automation_api_examples.rs) |
+| 🐹 Go | [`code_samples/go/antigravity_automation_api_examples.go`](code_samples/go/antigravity_automation_api_examples.go) |
+| 💎 Ruby | [`code_samples/ruby/antigravity_automation_api_examples.rb`](code_samples/ruby/antigravity_automation_api_examples.rb) |
+| 🐘 PHP | [`code_samples/php/antigravity_automation_api_examples.php`](code_samples/php/antigravity_automation_api_examples.php) |
+| 🟦 C# | [`code_samples/csharp/antigravity_automation_api_examples.cs`](code_samples/csharp/antigravity_automation_api_examples.cs) |
+| 🔧 cURL / Shell | [`code_samples/curl/antigravity_automation_api_examples.sh`](code_samples/curl/antigravity_automation_api_examples.sh) |
 
 Each file demonstrates: toggle automation, send commands, start/switch chats, get stats, push updates, track actions, and WebSocket streaming.
 
