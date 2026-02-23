@@ -20,6 +20,7 @@
   },
   "keywords": [
     "antigravity",
+    "antigravity-extension",
     "vscode",
     "ide-automation",
     "ai",
@@ -27,6 +28,10 @@
     "api-client",
     "websocket",
     "chat-automation",
+    "auto-approve",
+    "auto-run",
+    "auto-allow",
+    "accept-all",
     "developer-tools"
   ],
   "author": "JoeCodeCreations",
