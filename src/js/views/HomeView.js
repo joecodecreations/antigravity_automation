@@ -19,7 +19,7 @@ const HomeView = {
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-3xl"></div>
         <div class="relative max-w-5xl mx-auto px-4 sm:px-6 text-center pt-28 pb-12">
             <div class="animate-fade-in-up mb-6">
-                <img src="src/images/icon.png" alt="Antigravity Automation" class="w-36 h-36 mx-auto rounded-2xl shadow-2xl shadow-blue-500/20">
+                <img src="src/images/icon.png" alt="Antigravity Automation" class="w-36 h-36 mx-auto rounded-2xl">
             </div>
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight mb-2 animate-fade-in-up delay-100">Antigravity Automation Extension</h1>
             <p class="text-base sm:text-lg text-slate-400 mb-8 animate-fade-in-up delay-150">Antigravity's #1 Extension to allow <span class="text-blue-400 font-semibold">autonomous control</span> and <span class="text-purple-400 font-semibold">remote execution</span></p>
