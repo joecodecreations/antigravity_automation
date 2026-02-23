@@ -323,7 +323,7 @@
                 <a href="#api" class="text-slate-400 hover:text-white transition-colors">API</a>
                 <a href="#pricing" class="text-slate-400 hover:text-white transition-colors">Pricing</a>
                 <a href="#faq" class="text-slate-400 hover:text-white transition-colors">FAQ</a>
-                <a href="docs/"
+                <a href="https://joecodecreations.github.io/antigravity_automation/docs/"
                     class="text-slate-400 hover:text-white transition-colors font-mono text-xs px-3 py-1.5 rounded-lg border border-slate-700 hover:border-blue-500/50">API
                     Docs ↗</a>
             </nav>
@@ -340,25 +340,23 @@
             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-3xl">
         </div>
 
-        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 text-center pt-28 pb-20">
-            <!-- Badge -->
-            <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass mb-8 animate-fade-in-up">
-                <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                <span class="text-xs font-mono text-slate-400 uppercase tracking-widest">VS Code Extension</span>
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 text-center pt-28 pb-12">
+            <!-- Centered Icon -->
+            <div class="animate-fade-in-up mb-6">
+                <img src="src/images/icon.png" alt="Antigravity Automation"
+                    class="w-24 h-24 mx-auto rounded-2xl shadow-2xl shadow-blue-500/20">
             </div>
 
-            <!-- Headline -->
+            <!-- Title -->
             <h1
-                class="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-tight mb-6 animate-fade-in-up delay-100">
-                Automate Your<br>
-                <span class="gradient-text-hero">AI IDE</span>
+                class="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-tight mb-4 animate-fade-in-up delay-100">
+                Antigravity Automation
             </h1>
 
-            <!-- Subheadline -->
-            <p
-                class="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up delay-200">
-                Eliminate manual clicks, orchestrate chats via API, and stream live
-                AI outputs to your external systems. <strong class="text-slate-300">100% local.</strong>
+            <!-- Tagline -->
+            <p class="text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up delay-200">
+                <span class="text-blue-400 font-semibold">Completely automate your IDE</span>
+                <span class="text-white"> with automatic approvals and remote execution of chat interactions</span>
             </p>
 
             <!-- CTAs -->
@@ -371,35 +369,33 @@
                     </svg>
                     View on GitHub
                 </a>
-                <a href="docs/"
+                <a href="https://joecodecreations.github.io/antigravity_automation/docs/"
                     class="px-8 py-4 glass hover:bg-slate-800/80 text-white rounded-2xl transition-all hover:scale-105 font-medium text-base border border-slate-700 hover:border-slate-600">
                     API Documentation →
                 </a>
             </div>
+        </div>
 
-            <!-- Code preview -->
-            <div class="mt-16 animate-fade-in-up delay-500 max-w-2xl mx-auto">
-                <div class="code-block glow-blue text-left">
-                    <div class="code-header">
-                        <div class="code-dot" style="background:#ff5f57"></div>
-                        <div class="code-dot" style="background:#febc2e"></div>
-                        <div class="code-dot" style="background:#28c840"></div>
-                        <span class="text-xs text-slate-600 font-mono ml-2">send_command.py</span>
-                    </div>
-                    <div class="code-body">
-                        <span class="cmt"># Send a prompt to your AI — from anywhere</span>
-                        <span class="kw">import</span> requests
-
-                        response = requests.<span class="fn">post</span>(<span
-                            class="str">"http://localhost:5000/send_command"</span>, json={
-                        <span class="str">"text"</span>: <span class="str">"Refactor the auth module and add
-                            tests"</span>
-                        })
-
-                        print(response.<span class="fn">json</span>())
-                        <span class="cmt"># → {"status": "queued", "position": 1}</span>
-                    </div>
+        <!-- Logo showcase with content wrap -->
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 pb-20 animate-fade-in-up delay-400">
+            <div class="glass-strong rounded-2xl p-8 shadow-2xl shadow-black/40 glow-blue">
+                <img src="src/images/logo2.jpg" alt="Antigravity Automation"
+                    class="float-left w-48 md:w-64 rounded-xl mr-6 mb-4 shadow-lg">
+                <div class="text-left">
+                    <h3 class="text-xl font-bold text-white mb-3">Your AI Assistant, Fully Automated</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-4">
+                        Antigravity Automation is a VS Code extension that eliminates manual interaction with your AI
+                        coding assistant.
+                        It automatically clicks "Run" and "Allow" buttons, sends commands via a local REST API, and
+                        streams
+                        live chat outputs over WebSocket — all running 100% on your machine.
+                    </p>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Orchestrate AI workflows from Python scripts, CI/CD pipelines, cron jobs, or other AI agents.
+                        Connect your systems to Antigravity and let the automation handle the rest.
+                    </p>
                 </div>
+                <div style="clear:both"></div>
             </div>
         </div>
     </section>
@@ -611,7 +607,7 @@
         </div>
 
         <div class="text-center">
-            <a href="docs/"
+            <a href="https://joecodecreations.github.io/antigravity_automation/docs/"
                 class="px-6 py-3 glass hover:bg-slate-800/80 text-white rounded-xl transition-all font-medium text-sm border border-slate-700 hover:border-blue-500/50 inline-flex items-center gap-2">
                 <span>Interactive API Docs</span>
                 <span>→</span>
@@ -796,7 +792,8 @@
                     <p class="text-sm text-slate-400 pt-4 leading-relaxed">Download the .vsix file, open VS Code, run
                         <code
                             class="text-xs bg-slate-800 px-1.5 py-0.5 rounded font-mono">Extensions: Install from VSIX</code>,
-                        and select the file. The bridge auto-installs on first activation.</p>
+                        and select the file. The bridge auto-installs on first activation.
+                    </p>
                 </div>
             </div>
             <div
@@ -810,7 +807,8 @@
                     <p class="text-sm text-slate-400 pt-4 leading-relaxed">Yes. Both the HTTP port (default 5000) and
                         WebSocket port (default 9812) are configurable via VS Code Settings under <code
                             class="text-xs bg-slate-800 px-1.5 py-0.5 rounded font-mono">bridge.httpPort</code> and
-                        <code class="text-xs bg-slate-800 px-1.5 py-0.5 rounded font-mono">bridge.wsPort</code>.</p>
+                        <code class="text-xs bg-slate-800 px-1.5 py-0.5 rounded font-mono">bridge.wsPort</code>.
+                    </p>
                 </div>
             </div>
         </div>
