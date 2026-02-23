@@ -10,6 +10,42 @@ const SdksView = {
             });
         }
 
+        function esc(s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function highlight(code, lang) {
+            let h = esc(code);
+            // Comments
+            if (lang === 'python') {
+                h = h.replace(/(#.*)/g, '<span style="color:#8b949e;font-style:italic">$1</span>');
+            } else {
+                h = h.replace(/(\/\/.*)/g, '<span style="color:#8b949e;font-style:italic">$1</span>');
+            }
+            // Strings (double then single)
+            h = h.replace(/("[^"]*")/g, '<span style="color:#a5d6ff">$1</span>');
+            h = h.replace(/('[^']*')/g, '<span style="color:#a5d6ff">$1</span>');
+            // Template strings
+            h = h.replace(/(`[^`]*`)/g, '<span style="color:#a5d6ff">$1</span>');
+            // Keywords
+            if (lang === 'python') {
+                h = h.replace(/\b(from|import|as|def|class|return|if|else|elif|for|while|with|async|await|True|False|None|lambda|print|self)\b/g, '<span style="color:#ff7b72">$1</span>');
+            } else {
+                h = h.replace(/\b(const|let|var|new|await|async|function|return|if|else|for|while|true|false|null|require|import|from|export)\b/g, '<span style="color:#ff7b72">$1</span>');
+            }
+            // Numbers
+            h = h.replace(/\b(\d+\.?\d*)\b/g, '<span style="color:#79c0ff">$1</span>');
+            // Function calls
+            h = h.replace(/\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/g, '<span style="color:#d2a8ff">$1</span>(');
+            // f-strings highlight
+            h = h.replace(/\bf(&lt;span|&quot;)/g, '<span style="color:#a5d6ff">f</span>$1');
+            return h;
+        }
+
+        function hi(code) {
+            return highlight(code, active.value === 'nodejs' ? 'js' : 'python');
+        }
+
         const sdks = {
             nodejs: {
                 name: 'Node.js',
@@ -137,8 +173,11 @@ stream = AntigravityStream(
         };
 
         const sdk = computed(() => sdks[active.value]);
+        const hiQuickstart = computed(() => hi(sdk.value.quickstart));
+        const hiStream = computed(() => hi(sdk.value.stream));
+        const hiConfig = computed(() => hi(sdk.value.config));
 
-        return { active, copied, copy, sdk };
+        return { active, copied, copy, sdk, hiQuickstart, hiStream, hiConfig };
     },
     template: `
     <div class="view-enter">
@@ -194,7 +233,7 @@ stream = AntigravityStream(
                         <div class="code-dot" style="background:#28c840"></div>
                         <span class="text-xs text-slate-600 font-mono ml-2">{{active === 'nodejs' ? 'app.js' : 'app.py'}}</span>
                     </div>
-                    <div class="code-body">{{sdk.quickstart}}</div>
+                    <div class="code-body" v-html="hiQuickstart"></div>
                     <button @click="copy(sdk.quickstart, 'quickstart')" class="absolute top-3 right-3 px-2.5 py-1 rounded-md text-xs font-mono transition-all" :class="copied === 'quickstart' ? 'bg-green-500/20 text-green-400' : 'bg-slate-800 text-slate-500 opacity-0 group-hover:opacity-100 hover:text-white'">
                         {{copied === 'quickstart' ? '✓ Copied' : 'Copy'}}
                     </button>
@@ -211,7 +250,7 @@ stream = AntigravityStream(
                         <div class="code-dot" style="background:#28c840"></div>
                         <span class="text-xs text-slate-600 font-mono ml-2">{{active === 'nodejs' ? 'stream.js' : 'stream.py'}}</span>
                     </div>
-                    <div class="code-body">{{sdk.stream}}</div>
+                    <div class="code-body" v-html="hiStream"></div>
                     <button @click="copy(sdk.stream, 'stream')" class="absolute top-3 right-3 px-2.5 py-1 rounded-md text-xs font-mono transition-all" :class="copied === 'stream' ? 'bg-green-500/20 text-green-400' : 'bg-slate-800 text-slate-500 opacity-0 group-hover:opacity-100 hover:text-white'">
                         {{copied === 'stream' ? '✓ Copied' : 'Copy'}}
                     </button>
@@ -262,7 +301,7 @@ stream = AntigravityStream(
                         <div class="code-dot" style="background:#28c840"></div>
                         <span class="text-xs text-slate-600 font-mono ml-2">config</span>
                     </div>
-                    <div class="code-body">{{sdk.config}}</div>
+                    <div class="code-body" v-html="hiConfig"></div>
                     <button @click="copy(sdk.config, 'config')" class="absolute top-3 right-3 px-2.5 py-1 rounded-md text-xs font-mono transition-all" :class="copied === 'config' ? 'bg-green-500/20 text-green-400' : 'bg-slate-800 text-slate-500 opacity-0 group-hover:opacity-100 hover:text-white'">
                         {{copied === 'config' ? '✓ Copied' : 'Copy'}}
                     </button>
