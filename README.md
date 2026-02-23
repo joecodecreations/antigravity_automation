@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://antigravityautomation.com"><img src="https://img.shields.io/badge/🌐_Website_&_Docs-Visit_Now-blue?style=for-the-badge&labelColor=0f172a" alt="Website & Docs"></a>
   &nbsp;
-  <a href="https://antigravityautomation.com/docs/"><img src="https://img.shields.io/badge/📖_Interactive_API_Docs-Swagger_UI-green?style=for-the-badge&labelColor=0f172a" alt="Swagger UI"></a>
+  <a href="https://antigravityautomation.com/api/"><img src="https://img.shields.io/badge/📖_Interactive_API_Docs-Swagger_UI-green?style=for-the-badge&labelColor=0f172a" alt="Swagger UI"></a>
 </p>
 
 ---

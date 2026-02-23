@@ -31,7 +31,7 @@ dependencies = [
 [project.urls]
 Homepage = "https://antigravityautomation.com"
 Repository = "https://github.com/joecodecreations/antigravity_automation"
-Documentation = "https://antigravityautomation.com/docs/"
+Documentation = "https://antigravityautomation.com/api/"
 Issues = "https://github.com/joecodecreations/antigravity_automation/issues"
 
 [project.optional-dependencies]

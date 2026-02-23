@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://antigravityautomation.com">🌐 Website</a> &nbsp;·&nbsp;
-  <a href="https://antigravityautomation.com/docs/">📖 API Docs</a> &nbsp;·&nbsp;
+  <a href="https://antigravityautomation.com/api/">📖 API Docs</a> &nbsp;·&nbsp;
   <a href="https://github.com/joecodecreations/antigravity_automation">⭐ GitHub</a>
 </p>
 

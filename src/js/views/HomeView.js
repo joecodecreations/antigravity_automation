@@ -125,7 +125,7 @@ const HomeView = {
             </div>
         </div>
         <div class="text-center">
-            <a href="https://antigravityautomation.com/docs/" class="px-6 py-3 glass hover:bg-slate-800/80 text-white rounded-xl transition-all font-medium text-sm border border-slate-700 hover:border-blue-500/50 inline-flex items-center gap-2"><span>Interactive API Docs</span><span>→</span></a>
+            <a href="https://antigravityautomation.com/api/" class="px-6 py-3 glass hover:bg-slate-800/80 text-white rounded-xl transition-all font-medium text-sm border border-slate-700 hover:border-blue-500/50 inline-flex items-center gap-2"><span>Interactive API Docs</span><span>→</span></a>
             <a href="#/code-examples" class="ml-4 px-6 py-3 glass hover:bg-slate-800/80 text-white rounded-xl transition-all font-medium text-sm border border-slate-700 hover:border-purple-500/50 inline-flex items-center gap-2"><span>Code Examples</span><span>→</span></a>
         </div>
     </section>
