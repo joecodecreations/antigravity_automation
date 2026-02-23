@@ -21,7 +21,8 @@ const HomeView = {
             <div class="animate-fade-in-up mb-6">
                 <img src="src/images/icon.png" alt="Antigravity Automation" class="w-36 h-36 mx-auto rounded-2xl shadow-2xl shadow-blue-500/20">
             </div>
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight mb-4 animate-fade-in-up delay-100">Antigravity Automation</h1>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight mb-2 animate-fade-in-up delay-100">Antigravity Automation Extension</h1>
+            <p class="text-base sm:text-lg text-slate-400 mb-8 animate-fade-in-up delay-150">Antigravity's #1 Extension to allow <span class="text-blue-400 font-semibold">autonomous control</span> and <span class="text-purple-400 font-semibold">remote execution</span></p>
             <p class="text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up delay-200">
                 <span class="text-blue-400 font-semibold">Completely automate your IDE</span>
                 <span class="text-white"> with automatic approvals and remote execution of chat interactions</span>
@@ -208,6 +209,11 @@ const HomeView = {
                 <a href="https://github.com/joecodecreations/antigravity_automation" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-2xl shadow-2xl shadow-blue-500/30 transition-all hover:scale-105 active:scale-95 font-bold text-base inline-block">Get Started on GitHub</a>
             </div>
         </div>
+    </section>
+
+    <!-- Disclaimer -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 mb-10">
+        <p class="text-center text-xs text-slate-600 leading-relaxed">Disclaimer: Antigravity Automation is an independent third-party extension. It is not affiliated with, endorsed by, or associated with Google LLC, Alphabet Inc., or any of their subsidiaries or products. All trademarks and product names are the property of their respective owners.</p>
     </section>
     `
 };
