@@ -127,6 +127,11 @@ const HomeView = {
         <div class="text-center">
             <a href="https://antigravityautomation.com/api/" class="px-6 py-3 glass hover:bg-slate-800/80 text-white rounded-xl transition-all font-medium text-sm border border-slate-700 hover:border-blue-500/50 inline-flex items-center gap-2"><span>Interactive API Docs</span><span>→</span></a>
             <a href="#/code-examples" class="ml-4 px-6 py-3 glass hover:bg-slate-800/80 text-white rounded-xl transition-all font-medium text-sm border border-slate-700 hover:border-purple-500/50 inline-flex items-center gap-2"><span>Code Examples</span><span>→</span></a>
+            <a href="#/sdks" class="ml-4 px-6 py-3 glass hover:bg-slate-800/80 text-white rounded-xl transition-all font-medium text-sm border border-slate-700 hover:border-green-500/50 inline-flex items-center gap-2"><span>SDKs</span><span>→</span></a>
+        </div>
+        <div class="flex items-center justify-center gap-4 mt-5">
+            <a href="https://www.npmjs.com/package/antigravity-automation" class="inline-flex items-center gap-2 px-4 py-2 glass rounded-lg text-xs font-mono text-slate-400 hover:text-white transition-colors"><span class="text-green-400">npm</span> antigravity-automation ↗</a>
+            <a href="https://pypi.org/project/antigravity-automation/" class="inline-flex items-center gap-2 px-4 py-2 glass rounded-lg text-xs font-mono text-slate-400 hover:text-white transition-colors"><span class="text-blue-400">PyPI</span> antigravity-automation ↗</a>
         </div>
     </section>
 

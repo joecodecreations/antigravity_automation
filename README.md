@@ -10,6 +10,14 @@
   <a href="https://antigravityautomation.com/api/"><img src="https://img.shields.io/badge/📖_Interactive_API_Docs-Swagger_UI-green?style=for-the-badge&labelColor=0f172a" alt="Swagger UI"></a>
 </p>
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/antigravity-automation"><img src="https://img.shields.io/npm/v/antigravity-automation?style=flat-square&logo=npm&logoColor=white&label=npm&color=CB3837" alt="npm"></a>
+  &nbsp;
+  <a href="https://pypi.org/project/antigravity-automation/"><img src="https://img.shields.io/pypi/v/antigravity-automation?style=flat-square&logo=python&logoColor=white&label=PyPI&color=3776AB" alt="PyPI"></a>
+  &nbsp;
+  <a href="https://antigravityautomation.com/#/sdks"><img src="https://img.shields.io/badge/SDKs-Node.js_|_Python-purple?style=flat-square" alt="SDKs"></a>
+</p>
+
 ---
 
 The **Antigravity Automation** is an extension for automating and remotely controlling the Antigravity IDE. 
