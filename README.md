@@ -11,6 +11,8 @@
 </p>
 
 <p align="center">
+  <a href="https://open-vsx.org/extension/joecodecreations/antigravity-automation"><img src="https://img.shields.io/badge/Open_VSX-Extension-blueviolet?style=flat-square&logo=eclipse-ide&logoColor=white" alt="Open VSX"></a>
+  &nbsp;
   <a href="https://www.npmjs.com/package/antigravity-automation"><img src="https://img.shields.io/npm/v/antigravity-automation?style=flat-square&logo=npm&logoColor=white&label=npm&color=CB3837" alt="npm"></a>
   &nbsp;
   <a href="https://pypi.org/project/antigravity-automation/"><img src="https://img.shields.io/pypi/v/antigravity-automation?style=flat-square&logo=python&logoColor=white&label=PyPI&color=3776AB" alt="PyPI"></a>
@@ -28,6 +30,14 @@ The **Antigravity Automation** is an extension for automating and remotely contr
 Recursive planning, execution and continuation using orchestrated workflows to leverage Antigravity as a piece of your larger workflows.
 
 This extension injects a secure, lightweight communication bridge directly into your active VSCode Workbench, allowing you to orchestrate the AI using external scripts, automate repetitive conversational clicks, and export scraped content natively to your local filesystem.
+
+## ⬇️ Install the Extension
+
+Install directly from the **Open VSX Registry**:
+
+> **[🔗 Install Antigravity Automation on Open VSX](https://open-vsx.org/extension/joecodecreations/antigravity-automation)**
+
+Once installed, the extension runs locally and provides a REST API + WebSocket for external control. Use the [Node.js SDK](https://www.npmjs.com/package/antigravity-automation) or [Python SDK](https://pypi.org/project/antigravity-automation/) to interact with it programmatically.
 
 ## Features
 
@@ -159,5 +169,5 @@ All endpoints accept JSON payloads and return JSON responses. Send requests with
 - **`GET /stats`** - View current usage metrics for Auto-Run, Auto-Allow, Remote Commands.
 - **`POST /track_action`** - Track a usage action. Payload: `{ "action": "auto_run" }`
 
-> **Important Note on Freemium Limits**:
-> Interactions with the Automation endpoints (`toggle_auto_run`, `toggle_auto_allow`) and Remote Control endpoints (`send_command`, `start-new-chat`, `switch_chat`) are gated by basic usage limits. Requesting these APIs beyond your free clicks will respond with a **403 Forbidden** along with `{"error": "...", "upgrade_url": "..."}` until a Pro-tier license is successfully activated!
+> **Freemium Limits**:
+> The extension is free to use with generous limits — **500 auto-clicks** and **100 remote commands**. After that, a one-time or subscription license unlocks unlimited usage. API responses include `{"error": "...", "upgrade_url": "..."}` when limits are reached.

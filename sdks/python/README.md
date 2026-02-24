@@ -11,6 +11,7 @@
 <p align="center">
   <a href="https://antigravityautomation.com">🌐 Website</a> &nbsp;·&nbsp;
   <a href="https://antigravityautomation.com/api/">📖 API Docs</a> &nbsp;·&nbsp;
+  <a href="https://open-vsx.org/extension/joecodecreations/antigravity-automation">⬇️ Install Extension</a> &nbsp;·&nbsp;
   <a href="https://github.com/joecodecreations/antigravity_automation">⭐ GitHub</a>
 </p>
 
@@ -96,7 +97,7 @@ twine upload dist/*              # Publish to PyPI
 ## Requirements
 
 - **Python** ≥ 3.8
-- **Antigravity Automation** extension installed and running in VS Code
+- **[Antigravity Automation](https://open-vsx.org/extension/joecodecreations/antigravity-automation)** extension installed and running in VS Code
 
 ## License
 

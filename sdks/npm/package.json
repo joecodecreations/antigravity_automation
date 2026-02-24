@@ -1,6 +1,6 @@
 {
   "name": "antigravity-automation",
-  "version": "0.42.0",
+  "version": "1.4.0",
   "description": "Node.js client library for the Antigravity Automation API — automate clicks, send commands, stream live AI outputs via REST & WebSocket.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
