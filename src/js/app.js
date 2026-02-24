@@ -21,6 +21,7 @@ const SiteHeader = {
             </a>
             <nav class="hidden md:flex items-center gap-6 text-sm">
                 <a href="#/" :class="currentHash === '#/' ? 'text-white' : 'text-slate-400 hover:text-white'" class="transition-colors">Home</a>
+                <a href="#/install" :class="currentHash === '#/install' ? 'text-white' : 'text-slate-400 hover:text-white'" class="transition-colors">Install</a>
                 <a href="#/code-examples" :class="currentHash === '#/code-examples' ? 'text-white' : 'text-slate-400 hover:text-white'" class="transition-colors">Code Examples</a>
                 <a href="#/sdks" :class="currentHash === '#/sdks' ? 'text-white' : 'text-slate-400 hover:text-white'" class="transition-colors">SDKs</a>
                 <a href="https://antigravityautomation.com/api/" class="text-slate-400 hover:text-white transition-colors font-mono text-xs px-3 py-1.5 rounded-lg border border-slate-700 hover:border-blue-500/50">API Docs ↗</a>
@@ -40,6 +41,7 @@ const SiteFooter = {
                 <span class="text-sm text-slate-500">© 2025 Antigravity Automation · <a href="https://github.com/joecodecreations" class="hover:text-white transition-colors">JoeCodeCreations</a></span>
             </div>
             <div class="flex items-center gap-6 text-sm">
+                <a href="#/install" class="text-slate-500 hover:text-white transition-colors">Install</a>
                 <a href="#/code-examples" class="text-slate-500 hover:text-white transition-colors">Code Examples</a>
                 <a href="#/sdks" class="text-slate-500 hover:text-white transition-colors">SDKs</a>
                 <a href="https://antigravityautomation.com/api/" class="text-slate-500 hover:text-white transition-colors">API Docs</a>
@@ -55,6 +57,7 @@ const app = createApp({
     setup() {
         const currentView = computed(() => {
             switch (currentHash.value) {
+                case '#/install': return 'install-view';
                 case '#/code-examples': return 'code-examples-view';
                 case '#/sdks': return 'sdks-view';
                 default: return 'home-view';
@@ -67,6 +70,7 @@ const app = createApp({
 app.component('site-header', SiteHeader);
 app.component('site-footer', SiteFooter);
 app.component('home-view', HomeView);
+app.component('install-view', InstallView);
 app.component('code-examples-view', CodeExamplesView);
 app.component('sdks-view', SdksView);
 app.mount('#app');
