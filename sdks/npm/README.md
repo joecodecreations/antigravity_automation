@@ -17,6 +17,31 @@
 
 ---
 
+<br>
+
+<table align="center">
+<tr>
+<td align="center">
+
+### 🚨 PREREQUISITE — Extension Required
+
+**This SDK connects to the [Antigravity Automation](https://antigravityautomation.com) VS Code extension.**
+**You MUST install the extension first — the SDK does not work without it.**
+
+<br>
+
+<a href="https://open-vsx.org/extension/joecodecreations/antigravity-automation">
+  <img src="https://img.shields.io/badge/⬇️_Install_Extension-Open_VSX-blue?style=for-the-badge&logoColor=white" alt="Install Extension">
+</a>
+
+</td>
+</tr>
+</table>
+
+<br>
+
+---
+
 Automate clicks, send commands, and stream live AI chat outputs from Node.js — all via the local REST API and WebSocket provided by the [Antigravity Automation](https://antigravityautomation.com) VS Code extension.
 
 ## Install

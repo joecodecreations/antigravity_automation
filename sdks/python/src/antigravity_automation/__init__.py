@@ -17,7 +17,7 @@ from .types import (
     TrackActionResponse,
 )
 
-__version__ = "1.4.0"
+__version__ = "1.6.0"
 __all__ = [
     "AntigravityClient",
     "AntigravityStream",
